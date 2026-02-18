@@ -3,37 +3,38 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.auth.dependencies import get_current_user, get_current_admin
 from app.auth.models import User
-from app.billing import schemas, service
+from app.billing import service
+from app.billing.plans import SubscriptionTier
 
 router = APIRouter(prefix="/billing", tags=["Billing"])
 
-@router.get("/subscription", response_model=schemas.SubscriptionWithLimits)
-def get_subscription(
+@router.get("/my-subscription")
+def get_my_subscription(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Get user's subscription with usage and limits"""
+    """Get my subscription details"""
     return service.BillingService.get_subscription_details(db, current_user)
 
-@router.get("/plans", response_model=list[schemas.TierInfo])
+@router.get("/plans")
 def get_all_plans():
-    """Get all available plans (for pricing page)"""
+    """Get all available plans"""
     return service.BillingService.get_all_tiers()
 
 @router.post("/admin/upgrade-user/{user_id}")
-def upgrade_user(
+def admin_upgrade_user(
     user_id: int,
-    tier: schemas.SubscriptionTier,
-    db: Session = Depends(get_db),
-    admin: User = Depends(get_current_admin)
+    tier: SubscriptionTier,
+    admin: User = Depends(get_current_admin),
+    db: Session = Depends(get_db)
 ):
-    """Admin upgrades user's subscription"""
+    """Admin manually upgrades user"""
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         return {"error": "User not found"}
     
-    subscription = service.BillingService.get_or_create_subscription(db, user)
-    subscription.tier = tier
+    sub = service.BillingService.get_or_create_subscription(db, user)
+    sub.tier = tier
     db.commit()
     
     return {"message": f"Upgraded {user.email} to {tier}"}

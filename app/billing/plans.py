@@ -9,6 +9,7 @@ class MediaType(str, Enum):
     IMAGE = "image"
     VIDEO = "video"
 
+# Tier configurations
 TIER_LIMITS = {
     SubscriptionTier.FREE: {
         "name": "Free",
@@ -36,17 +37,17 @@ TIER_LIMITS = {
     
     SubscriptionTier.BASIC: {
         "name": "Basic",
-        "price": 2500,  
+        "price": 2500,
         "limits": {
             MediaType.IMAGE: {
                 "count_per_month": 50,
-                "max_size_mb": 5,
+                "max_size_mb": 20,
                 "max_resolution": "3840x2160"
             },
             MediaType.VIDEO: {
                 "count_per_month": 20,
-                "max_duration_seconds": 300,  
-                "max_size_mb": 250,
+                "max_duration_seconds": 300,
+                "max_size_mb": 500,
                 "max_resolution": "1920x1080"
             }
         },
@@ -61,7 +62,7 @@ TIER_LIMITS = {
     
     SubscriptionTier.PRO: {
         "name": "Pro",
-        "price": 7500,  
+        "price": 7500,
         "limits": {
             MediaType.IMAGE: {
                 "count_per_month": 200,
@@ -70,16 +71,16 @@ TIER_LIMITS = {
             },
             MediaType.VIDEO: {
                 "count_per_month": 100,
-                "max_duration_seconds": 600,  
-                "max_size_mb": 500,  
+                "max_duration_seconds": 1800,
+                "max_size_mb": 5000,
                 "max_resolution": "3840x2160"
             }
         },
         "features": [
             "200 images/month",
-            "100 videos/month (10 min max)",
+            "100 videos/month (30 min max)",
             "4K quality",
-            "Premium light adjustment",
+            "Premium enhancement",
             "Fastest processing",
             "Bulk processing",
             "API access"

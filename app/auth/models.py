@@ -18,3 +18,4 @@ class User(Base):
     
     credits_remaining = Column(Integer, default=5)
     subscription = relationship("Subscription", back_populates="user", uselist=False)
+    media_files = relationship("MediaFile", back_populates="user") 
