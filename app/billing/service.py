@@ -56,18 +56,18 @@ class BillingService:
         
         if media_type == MediaType.IMAGE:
             if subscription.images_used_this_month >= limits["count_per_month"]:
-                return False#, f"Monthly image limit reached ({limits['count_per_month']}). Upgrade to process more."
+                return False, f"Monthly image limit reached ({limits['count_per_month']}). Upgrade to process more."
         else:
             if subscription.videos_used_this_month >= limits["count_per_month"]:
-                return False#, f"Monthly video limit reached ({limits['count_per_month']}). Upgrade to process more."
+                return False, f"Monthly video limit reached ({limits['count_per_month']}). Upgrade to process more."
         
         if file_size_mb and file_size_mb > limits["max_size_mb"]:
-            return False#, f"File too large. Max size: {limits['max_size_mb']}MB"
+            return False, f"File too large. Max size: {limits['max_size_mb']}MB"
         
         if media_type == MediaType.VIDEO and duration_seconds:
             if duration_seconds > limits["max_duration_seconds"]:
                 max_minutes = limits["max_duration_seconds"] / 60
-                return False#, f"Video too long. Max duration: {max_minutes} minutes"
+                return False, f"Video too long. Max duration: {max_minutes} minutes"
         
         return True, "OK"
     

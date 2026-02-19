@@ -77,11 +77,9 @@ class AuthService:
                 detail="Account is inactive"
             )
         
-        # ✅ Create both tokens
         access_token = AuthService.create_access_token(user.id)
         refresh_token = AuthService.create_refresh_token()
         
-        # ✅ Store refresh token in database
         user.refresh_token = refresh_token
         user.refresh_token_expires_at = AuthService.get_refresh_token_expiry()
         db.commit()
@@ -92,7 +90,6 @@ class AuthService:
     def refresh_access_token(db: Session, refresh_token: str) -> str:
         """Use refresh token to get new access token"""
         
-        # Find user by refresh token
         user = db.query(User).filter(User.refresh_token == refresh_token).first()
         
         if not user:
@@ -101,21 +98,18 @@ class AuthService:
                 detail="Invalid refresh token"
             )
         
-        # Check if refresh token expired
         if user.refresh_token_expires_at < datetime.utcnow():
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Refresh token expired, please login again"
             )
         
-        # Check if user is active
         if not user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Account is inactive"
             )
         
-        # Create new access token
         new_access_token = AuthService.create_access_token(user.id)
         
         return new_access_token
