@@ -7,7 +7,7 @@ from app.media.routes import router as media_router
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Media Enhancement API")
+app = FastAPI(title="Shadow Shift API")
 
 app.add_middleware(
     CORSMiddleware,

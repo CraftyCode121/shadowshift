@@ -11,11 +11,9 @@ class Subscription(Base):
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     tier = Column(SQLEnum(SubscriptionTier), default=SubscriptionTier.FREE)
     
-    # ✅ FIX: Use server_default for integers
     images_used_this_month = Column(Integer, server_default="0")
     videos_used_this_month = Column(Integer, server_default="0")
     
-    # ✅ FIX: Remove defaults, set in service layer
     current_period_start = Column(DateTime)
     current_period_end = Column(DateTime)
     
