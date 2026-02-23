@@ -1,6 +1,6 @@
 # ShadowShift ⚡
 
-![ShadowShift Banner](./Lit your Media(2).png)
+![ShadowShift Banner](Lit your Media(2).png)
 
 **ShadowShift** is a FastAPI-powered backend for the ShadowShift web platform — an AI-driven service that enhances low-light photos and videos using a custom **ZR-DCE** (Zero-Reference Deep Curve Estimation) model built with TensorFlow's subclassing API.
 
